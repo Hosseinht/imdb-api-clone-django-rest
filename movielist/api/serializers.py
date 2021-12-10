@@ -4,11 +4,19 @@ from movielist.models import Movie
 
 
 class MovieSerializer(serializers.ModelSerializer):
+    """Add a custom field. this field is not in the Movie model"""
+    len_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Movie
         fields = '__all__'
         # fields = ['id', 'name', 'description']
         # exclude = ['active']
+
+    def get_len_name(self, object):
+        length = len(object.name)
+        return length
+        # return len(object.name)
 
     def validate(self, data):
         """Object level validation"""

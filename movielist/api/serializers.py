@@ -6,7 +6,7 @@ from movielist.models import Watchlist, StreamPlatform, Review
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = '__all__'
+        exclude = ('watchlist',)
 
 
 class WatchlistSerializer(serializers.ModelSerializer):

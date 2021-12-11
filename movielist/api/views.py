@@ -6,9 +6,25 @@ from movielist.models import Watchlist, StreamPlatform, Review
 from movielist.api.serializers import WatchlistSerializer, StreamPlatformSerializer, ReviewSerializer
 
 
-class ReviewList(generics.ListCreateAPIView):
-    queryset = Review.objects.all()
+class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        return Review.objects.all()
+
+    def perform_create(self, serializer):
+        pk = self.kwargs.get('pk')
+        watchlist = Watchlist.objects.get(pk=pk)
+        serializer.save(watchlist=watchlist)
+
+
+class ReviewList(generics.ListAPIView):
+    # queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Review.objects.filter(watchlist=pk)
 
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):

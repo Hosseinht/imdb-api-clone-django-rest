@@ -1,10 +1,16 @@
 from rest_framework import serializers
 
-from movielist.models import Watchlist, StreamPlatform
+from movielist.models import Watchlist, StreamPlatform, Review
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
 
 
 class WatchlistSerializer(serializers.ModelSerializer):
-    """Add a custom field. this field is not in the Movie model"""
+    reviews = ReviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = Watchlist
@@ -13,6 +19,7 @@ class WatchlistSerializer(serializers.ModelSerializer):
 
 class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
     watchlist = WatchlistSerializer(many=True, read_only=True)
+
     # url = serializers.HyperlinkedIdentityField(view_name="watchlist:stream-detail")
     # watchlist = serializers.StringRelatedField(many=True)
     # watchlist = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='movie-detail')

@@ -17,7 +17,7 @@ class WatchlistSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
+class StreamPlatformSerializer(serializers.ModelSerializer):
     watchlist = WatchlistSerializer(many=True, read_only=True)
 
     # url = serializers.HyperlinkedIdentityField(view_name="watchlist:stream-detail")
@@ -27,6 +27,6 @@ class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = StreamPlatform
         fields = '__all__'
-        extra_kwargs = {
-            'url': {'view_name': 'watchlist:stream-detail'},
-        }
+        # extra_kwargs = {
+        #     'url': {'view_name': 'watchlist:stream-detail'},
+        # }

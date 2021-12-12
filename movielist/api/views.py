@@ -1,6 +1,7 @@
 from rest_framework import status, mixins, generics, viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from movielist.models import Watchlist, StreamPlatform, Review
@@ -16,7 +17,13 @@ class ReviewCreate(generics.CreateAPIView):
     def perform_create(self, serializer):
         pk = self.kwargs.get('pk')
         watchlist = Watchlist.objects.get(pk=pk)
-        serializer.save(watchlist=watchlist)
+        review_user = self.request.user
+        review_queryset = Review.objects.filter(watchlist=watchlist, review_user=review_user)
+
+        if review_queryset.exists():
+            raise ValidationError("You have already reviewed")
+
+        serializer.save(watchlist=watchlist, review_user=review_user)
 
 
 class ReviewList(generics.ListAPIView):

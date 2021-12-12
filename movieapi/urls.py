@@ -6,5 +6,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('watch/', include('movielist.api.urls', namespace='watchlist')),
     path('api-auth/', include('rest_framework.urls')),
-
 ]

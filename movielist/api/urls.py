@@ -15,7 +15,7 @@ router.register('stream', StreamPlatformVS, basename='streamplatform')
 
 urlpatterns = [
     path('list/', WatchListAV.as_view(), name='movie-list'),
-    path('<int:pk>/', WatchlistDetailAV.as_view(), name='movie-detail'),
+    path('list/<int:pk>/', WatchlistDetailAV.as_view(), name='movie-detail'),
 
     path('', include(router.urls)),
     # path('stream/', StreamPlatformAV.as_view(), name='stream'),
@@ -23,7 +23,11 @@ urlpatterns = [
     # path('review/', ReviewList.as_view(), name='review-list'),
     # path('review/<int:pk>/', ReviewDetail.as_view(), name='review-list'),
 
-    path('stream/<int:pk>/review-create/', ReviewCreate.as_view(), name='review-create'),
-    path('stream/<int:pk>/review/', ReviewList.as_view(), name='review-list'),
-    path('stream/review/<int:pk>/', ReviewDetail.as_view(), name='review-detail'),
+    # path('stream/<int:pk>/review-create/', ReviewCreate.as_view(), name='review-create'),
+    # path('stream/<int:pk>/review/', ReviewList.as_view(), name='review-list'),
+    # path('stream/review/<int:pk>/', ReviewDetail.as_view(), name='review-detail'),
+    path('list/<int:pk>/review-create/', ReviewCreate.as_view(), name='review-create'),
+    path('list/<int:pk>/review/', ReviewList.as_view(), name='review-list'),
+    path('list/review/<int:pk>/', ReviewDetail.as_view(), name='review-detail'),
+
 ]

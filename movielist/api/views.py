@@ -6,11 +6,12 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework.views import APIView
 from movielist.models import Watchlist, StreamPlatform, Review
 from movielist.api.serializers import WatchlistSerializer, StreamPlatformSerializer, ReviewSerializer
-from movielist.api.permissions import AdminOrReadonly, ReviewUserOrReadonly
+from movielist.api.permissions import IsAdminOrReadonly, IsReviewUserOrReadonly
 
 
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Review.objects.all()
@@ -37,7 +38,7 @@ class ReviewCreate(generics.CreateAPIView):
 class ReviewList(generics.ListAPIView):
     # queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -47,7 +48,7 @@ class ReviewList(generics.ListAPIView):
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [ReviewUserOrReadonly]
+    permission_classes = [IsReviewUserOrReadonly]
 
 
 # class ReviewList(mixins.ListModelMixin,
@@ -72,6 +73,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 #
 
 class WatchListAV(APIView):
+    permission_classes = [IsAdminOrReadonly]
 
     def get(self, request):
         movies = Watchlist.objects.all()
@@ -88,6 +90,8 @@ class WatchListAV(APIView):
 
 
 class WatchlistDetailAV(APIView):
+    permission_classes = [IsAdminOrReadonly]
+
     def get(self, request, pk):
         try:
             movie = Watchlist.objects.get(pk=pk)
@@ -112,6 +116,7 @@ class WatchlistDetailAV(APIView):
 
 
 class StreamPlatformVS(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadonly]
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
 
@@ -138,6 +143,7 @@ class StreamPlatformVS(viewsets.ModelViewSet):
 
 
 class StreamPlatformAV(APIView):
+    permission_classes = [IsAdminOrReadonly]
 
     def get(self, request):
         platform = StreamPlatform.objects.all()

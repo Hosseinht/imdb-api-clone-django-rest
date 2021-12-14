@@ -38,7 +38,7 @@ class ReviewCreate(generics.CreateAPIView):
 class ReviewList(generics.ListAPIView):
     # queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -116,9 +116,9 @@ class WatchlistDetailAV(APIView):
 
 
 class StreamPlatformVS(viewsets.ModelViewSet):
-    permission_classes = [IsAdminOrReadonly]
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
+    permission_classes = [IsAdminOrReadonly]
 
 
 # class StreamPlatformVS(viewsets.ViewSet):

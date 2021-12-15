@@ -5,6 +5,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle, ScopedRateThrottle
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from movielist.models import Watchlist, StreamPlatform, Review
 from movielist.api.serializers import WatchlistSerializer, StreamPlatformSerializer, ReviewSerializer
 from movielist.api.permissions import IsAdminOrReadonly, IsReviewUserOrReadonly
@@ -58,6 +60,8 @@ class ReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
     throttle_classes = [ReviewListThrottle, AnonRateThrottle]
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['review_user__username', 'active']
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -92,6 +96,25 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 #     def get(self, request, *args, **kwargs):
 #         return self.retrieve(request, *args, **kwargs)
 #
+
+class WatchList(generics.ListAPIView):
+    # Test django-filter for watchlist. it works just on generic views
+    queryset = Watchlist.objects.all()
+    serializer_class = WatchlistSerializer
+    # permission_classes = [IsAuthenticated]
+
+    # Filter
+    # filter_backends = [DjangoFilterBackend]
+    # filter_fields = ['title', 'platform__name']
+
+    # Search
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['title', 'platform__name']
+
+    # Ordering
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['avg_rating']
+
 
 class WatchListAV(APIView):
     permission_classes = [IsAdminOrReadonly]

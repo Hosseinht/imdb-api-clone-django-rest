@@ -5,7 +5,7 @@ from movielist.api.views import (
     WatchListAV, WatchlistDetailAV,
     StreamPlatformAV, StreamPlatformDetailAV,
     ReviewList, ReviewDetail, ReviewCreate,
-    StreamPlatformVS, UserReview, WatchList
+    StreamPlatformVS, UserReview, WatchListTest
 )
 
 app_name = 'watchlist'
@@ -16,7 +16,7 @@ router.register('stream', StreamPlatformVS, basename='streamplatform')
 urlpatterns = [
     path('', WatchListAV.as_view(), name='movie-list'),
     path('<int:pk>/', WatchlistDetailAV.as_view(), name='movie-detail'),
-    path('new-list/', WatchList.as_view(), name='watch-list'),
+    path('new-list/', WatchListTest.as_view(), name='watch-list'),
 
     path('', include(router.urls)),
 

@@ -97,7 +97,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 #         return self.retrieve(request, *args, **kwargs)
 #
 
-class WatchList(generics.ListAPIView):
+class WatchListTest(generics.ListAPIView):
     # Test django-filter for watchlist. it works just on generic views
     queryset = Watchlist.objects.all()
     serializer_class = WatchlistSerializer

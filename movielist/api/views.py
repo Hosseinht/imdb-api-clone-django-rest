@@ -11,7 +11,7 @@ from movielist.models import Watchlist, StreamPlatform, Review
 from movielist.api.serializers import WatchlistSerializer, StreamPlatformSerializer, ReviewSerializer
 from movielist.api.permissions import IsAdminOrReadonly, IsReviewUserOrReadonly
 from movielist.api.throttling import ReviewListThrottle, ReviewCreateThrottle
-from movielist.api.pagination import WatchListPagination, WatchListLimitOffset
+from movielist.api.pagination import WatchListPagination, WatchListLimitOffset, WatchListCursorPagination
 
 
 class UserReview(generics.ListAPIView):
@@ -102,7 +102,7 @@ class WatchListTest(generics.ListAPIView):
     # Test django-filter for watchlist. it works just on generic views
     queryset = Watchlist.objects.all()
     serializer_class = WatchlistSerializer
-    pagination_class = WatchListLimitOffset
+    pagination_class = WatchListCursorPagination
 
     # permission_classes = [IsAuthenticated]
 
@@ -115,8 +115,8 @@ class WatchListTest(generics.ListAPIView):
     # search_fields = ['title', 'platform__name']
 
     # Ordering
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['avg_rating']
+    # filter_backends = [filters.OrderingFilter]
+    # ordering_fields = ['avg_rating']
 
 
 class WatchListAV(APIView):

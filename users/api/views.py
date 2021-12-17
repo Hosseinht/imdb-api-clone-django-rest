@@ -1,12 +1,14 @@
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+# from rest_framework_simplejwt.tokens import RefreshToken
 from users.api.serializers import RegistrationSerializer
 
 
 @api_view(['POST', ])
+@permission_classes([IsAuthenticated])
 def logout_view(request):
     if request.method == 'POST':
         request.user.auth_token.delete()
@@ -38,4 +40,4 @@ def registration_view(request):
         else:
             data = serializer.errors
 
-    return Response(data)
+    return Response(data, status=status.HTTP_201_CREATED)
